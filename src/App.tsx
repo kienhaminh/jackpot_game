@@ -1,7 +1,9 @@
 import { GameStage } from "./components/GameStage";
 import { ConfigPanel } from "./components/ConfigPanel";
+import { BrandingPanel } from "./components/BrandingPanel";
 import { Leaderboard } from "./components/Leaderboard";
 import { useGameLogic } from "./hooks/useGameLogic";
+import { useBranding } from "./hooks/useBranding";
 import { Play, ArrowLeft, Rocket } from "lucide-react";
 
 function App() {
@@ -12,6 +14,7 @@ function App() {
     addPrize,
     removePrize,
     updatePrize,
+    importPrizesFromCSV,
     isSpinning,
     currentResult,
     spin,
@@ -24,6 +27,9 @@ function App() {
     digits,
     stoppedDigits,
   } = useGameLogic();
+
+  const { logoUrl, primaryColor, uploadLogo, removeLogo, setThemeColor } =
+    useBranding();
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center selection:bg-primary/30">
@@ -39,6 +45,16 @@ function App() {
             </p>
           </div>
 
+          {/* Branding Panel */}
+          <BrandingPanel
+            logoUrl={logoUrl}
+            primaryColor={primaryColor}
+            onUploadLogo={uploadLogo}
+            onRemoveLogo={removeLogo}
+            onSetThemeColor={setThemeColor}
+          />
+
+          {/* Prize Configuration */}
           <ConfigPanel
             rangeMax={rangeMax}
             setRangeMax={setRangeMax}
@@ -46,6 +62,7 @@ function App() {
             addPrize={addPrize}
             removePrize={removePrize}
             updatePrize={updatePrize}
+            onImportCSV={importPrizesFromCSV}
             isSpinning={isSpinning}
           />
 
@@ -54,6 +71,10 @@ function App() {
             <button
               onClick={startGame}
               className="group relative px-10 py-4 bg-primary text-black font-black text-xl uppercase tracking-widest rounded-full shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:shadow-[0_0_60px_rgba(245,158,11,0.7)] hover:scale-105 active:scale-95 transition-all overflow-hidden flex items-center gap-3"
+              style={{
+                backgroundColor: primaryColor,
+                boxShadow: `0 0 30px ${primaryColor}80`,
+              }}
             >
               <Rocket className="w-6 h-6" />
               Bắt Đầu Chơi
@@ -80,6 +101,17 @@ function App() {
               </button>
             </div>
 
+            {/* Logo Display - Above Spinning Section */}
+            {logoUrl && (
+              <div className="mb-6 flex justify-center">
+                <img
+                  src={logoUrl}
+                  alt="Logo"
+                  className="h-20 max-w-[250px] object-contain"
+                />
+              </div>
+            )}
+
             <GameStage
               currentResult={currentResult}
               isSpinning={isSpinning}
@@ -95,7 +127,11 @@ function App() {
                 <button
                   onClick={spin}
                   disabled={isSpinning}
-                  className="group relative px-12 py-4 bg-primary text-black font-black text-2xl uppercase tracking-widest rounded-full shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:shadow-[0_0_60px_rgba(245,158,11,0.7)] hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
+                  className="group relative px-12 py-4 text-black font-black text-2xl uppercase tracking-widest rounded-full hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
+                  style={{
+                    backgroundColor: primaryColor,
+                    boxShadow: `0 0 30px ${primaryColor}80`,
+                  }}
                 >
                   <span className="relative z-10 flex items-center gap-3">
                     {isSpinning ? "Đang quay..." : "Quay Số"}

@@ -1,6 +1,6 @@
 import type { Prize } from "../types";
-import { Trash2, Plus, Dice5, Hash } from "lucide-react";
-
+import { Trash2, Plus, Dice5, Hash, Upload, Download } from "lucide-react";
+import { useRef, useCallback } from "react";
 import { cn } from "../lib/utils";
 
 interface ConfigPanelProps {
@@ -10,6 +10,7 @@ interface ConfigPanelProps {
   addPrize: () => void;
   removePrize: (id: string) => void;
   updatePrize: (id: string, data: Partial<Prize>) => void;
+  onImportCSV: (csvContent: string) => void;
   isSpinning: boolean;
 }
 
@@ -20,8 +21,30 @@ export function ConfigPanel({
   addPrize,
   removePrize,
   updatePrize,
+  onImportCSV,
   isSpinning,
 }: ConfigPanelProps) {
+  const csvInputRef = useRef<HTMLInputElement>(null);
+
+  const handleCSVUpload = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const content = event.target?.result as string;
+          if (content) {
+            onImportCSV(content);
+          }
+        };
+        reader.readAsText(file);
+      }
+      // Reset input so same file can be uploaded again
+      e.target.value = "";
+    },
+    [onImportCSV]
+  );
+
   return (
     <div className="bg-card w-full max-w-4xl mx-auto p-6 rounded-xl border border-border shadow-2xl">
       <h2 className="text-xl font-bold mb-4 text-primary flex items-center gap-2">
@@ -50,13 +73,40 @@ export function ConfigPanel({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-foreground">Prize List</h3>
-          <button
-            onClick={addPrize}
-            disabled={isSpinning}
-            className="flex items-center gap-2 bg-primary/20 text-primary hover:bg-primary/30 px-4 py-2 rounded-lg transition-colors text-sm font-medium"
-          >
-            <Plus className="w-4 h-4" /> Add Prize
-          </button>
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-2">
+              {/* CSV Upload */}
+              <input
+                ref={csvInputRef}
+                type="file"
+                accept=".csv,.txt"
+                onChange={handleCSVUpload}
+                className="hidden"
+              />
+              <button
+                onClick={() => csvInputRef.current?.click()}
+                disabled={isSpinning}
+                className="flex items-center gap-2 bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground px-4 py-2 rounded-lg transition-colors text-sm font-medium"
+                title="Import từ file CSV (name,type,number)"
+              >
+                <Upload className="w-4 h-4" /> Import CSV
+              </button>
+              <button
+                onClick={addPrize}
+                disabled={isSpinning}
+                className="flex items-center gap-2 bg-primary/20 text-primary hover:bg-primary/30 px-4 py-2 rounded-lg transition-colors text-sm font-medium"
+              >
+                <Plus className="w-4 h-4" /> Add Prize
+              </button>
+            </div>
+            <a
+              href="/prizes_sample.csv"
+              download
+              className="text-[10px] text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 underline underline-offset-2"
+            >
+              <Download className="w-3 h-3" /> Tải file mẫu
+            </a>
+          </div>
         </div>
 
         <div className="grid grid-cols-12 gap-4 px-2 py-2 text-xs font-bold text-muted-foreground uppercase tracking-wider backdrop-blur-sm bg-background/30 rounded-t-lg">

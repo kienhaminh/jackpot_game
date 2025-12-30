@@ -8,8 +8,8 @@ interface GameStageProps {
   isSpinning: boolean;
   currentPrize: Prize | null;
   isGameComplete: boolean;
-  digits: [number, number, number]; // 3 digits
-  stoppedDigits: [boolean, boolean, boolean]; // which digits have stopped
+  digits: [number, number, number];
+  stoppedDigits: [boolean, boolean, boolean];
 }
 
 function SlotDigit({

@@ -34,6 +34,40 @@ export function useGameLogic() {
     setPrizes((prev) => prev.filter((p) => p.id !== id));
   };
 
+  const importPrizesFromCSV = (csvContent: string) => {
+    const lines = csvContent.trim().split("\n");
+    const newPrizes: Prize[] = [];
+
+    // Skip header if exists (check if first line looks like header)
+    const startIndex = lines[0]?.toLowerCase().includes("name") ? 1 : 0;
+
+    for (let i = startIndex; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      // Parse CSV: name,type,number (type and number are optional)
+      const parts = line.split(",").map((p) => p.trim());
+      const name = parts[0];
+      const type = parts[1]?.toLowerCase() === "fixed" ? "fixed" : "random";
+      const fixedNumber =
+        type === "fixed" && parts[2] ? parseInt(parts[2], 10) : undefined;
+
+      if (name) {
+        newPrizes.push({
+          id: crypto.randomUUID(),
+          name,
+          type,
+          fixedNumber,
+          isWon: false,
+        });
+      }
+    }
+
+    if (newPrizes.length > 0) {
+      setPrizes(newPrizes);
+    }
+  };
+
   const updatePrize = (id: string, updates: Partial<Prize>) => {
     setPrizes((prev) =>
       prev.map((p) => {
@@ -172,6 +206,7 @@ export function useGameLogic() {
     addPrize,
     removePrize,
     updatePrize,
+    importPrizesFromCSV,
     isSpinning,
     currentResult,
     spin,
