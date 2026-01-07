@@ -113,6 +113,20 @@ export function useGameLogic() {
     setStoppedDigits([false, false, false]);
   }, []);
 
+  const resetGame = useCallback(() => {
+    if (spinTimeoutRef.current) {
+      clearTimeout(spinTimeoutRef.current);
+    }
+    setPrizes((prev) =>
+      prev.map((p) => ({ ...p, isWon: false, winningResult: undefined }))
+    );
+    setCurrentPrizeIndex(0);
+    setCurrentResult(null);
+    setDigits([0, 0, 0]);
+    setStoppedDigits([false, false, false]);
+    setIsSpinning(false);
+  }, []);
+
   // Convert number to 3 digits (padded with zeros)
   const numberToDigits = (num: number): [number, number, number] => {
     const padded = String(num).padStart(3, "0");
@@ -213,6 +227,7 @@ export function useGameLogic() {
     phase,
     startGame,
     backToConfig,
+    resetGame,
     currentPrize,
     currentPrizeIndex,
     isGameComplete,

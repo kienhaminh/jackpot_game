@@ -21,6 +21,7 @@ const DEFAULT_COLOR = "#f59e0b";
 export function useBranding() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [primaryColor, setPrimaryColor] = useState<string>(DEFAULT_COLOR);
+  const [showLogoBorder, setShowLogoBorder] = useState<boolean>(true);
 
   const uploadLogo = useCallback((file: File) => {
     const reader = new FileReader();
@@ -45,18 +46,25 @@ export function useBranding() {
   const resetBranding = useCallback(() => {
     setLogoUrl(null);
     setPrimaryColor(DEFAULT_COLOR);
+    setShowLogoBorder(true);
     document.documentElement.style.setProperty(
       "--color-primary",
       DEFAULT_COLOR
     );
   }, []);
 
+  const toggleLogoBorder = useCallback(() => {
+    setShowLogoBorder((prev) => !prev);
+  }, []);
+
   return {
     logoUrl,
     primaryColor,
+    showLogoBorder,
     uploadLogo,
     removeLogo,
     setThemeColor,
+    toggleLogoBorder,
     resetBranding,
   };
 }

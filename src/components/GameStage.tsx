@@ -35,19 +35,19 @@ function SlotDigit({
   }, [isSpinning, isStopped, value]);
 
   return (
-    <div className="relative w-20 h-28 md:w-24 md:h-32 bg-gradient-to-b from-gray-200 via-gray-100 to-gray-300 rounded-xl shadow-inner flex items-center justify-center overflow-hidden">
+    <div className="relative w-32 h-44 md:w-40 md:h-56 bg-gradient-to-b from-gray-200 via-gray-100 to-gray-300 rounded-2xl shadow-xl flex items-center justify-center overflow-hidden">
       {/* Inner shadow effect */}
-      <div className="absolute inset-0 rounded-xl shadow-[inset_0_2px_10px_rgba(0,0,0,0.2)]" />
+      <div className="absolute inset-0 rounded-2xl shadow-[inset_0_4px_15px_rgba(0,0,0,0.25)]" />
 
       {/* Digit */}
       <AnimatePresence mode="popLayout">
         <motion.span
           key={displayValue}
-          initial={{ y: -60, opacity: 0 }}
+          initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 60, opacity: 0 }}
+          exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.08 }}
-          className="text-5xl md:text-6xl font-black text-gray-700 font-mono relative z-10"
+          className="text-7xl md:text-9xl font-black text-gray-700 font-mono relative z-10"
         >
           {displayValue}
         </motion.span>
@@ -116,8 +116,8 @@ export function GameStage({
 
       {/* Slot Machine Display */}
       {!isGameComplete && (
-        <div className="relative z-10 p-4 md:p-6 bg-slate-900/90 backdrop-blur-md rounded-2xl border-4 border-primary shadow-[0_0_40px_rgba(245,158,11,0.4)]">
-          <div className="flex gap-3 md:gap-4">
+        <div className="relative z-10 p-6 md:p-8 bg-slate-900/90 backdrop-blur-md rounded-3xl border-4 border-primary shadow-[0_0_60px_rgba(245,158,11,0.4)]">
+          <div className="flex gap-4 md:gap-6">
             <SlotDigit
               value={digits[0]}
               isSpinning={isSpinning}

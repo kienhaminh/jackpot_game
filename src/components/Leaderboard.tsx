@@ -18,9 +18,9 @@ export function Leaderboard({ prizes, currentPrizeIndex }: LeaderboardProps) {
   const totalPrizes = prizes.length;
 
   return (
-    <div className="bg-card/80 backdrop-blur-md w-full max-w-md p-6 rounded-2xl border border-border shadow-2xl">
-      <h2 className="text-xl font-bold mb-6 text-center text-foreground flex items-center justify-center gap-2">
-        <Trophy className="w-6 h-6 text-primary" />
+    <div className="bg-card/80 backdrop-blur-md w-full p-8 rounded-2xl border border-border shadow-2xl">
+      <h2 className="text-2xl font-bold mb-8 text-center text-foreground flex items-center justify-center gap-3">
+        <Trophy className="w-8 h-8 text-primary" />
         Bảng Giải Thưởng
       </h2>
 
@@ -39,7 +39,7 @@ export function Leaderboard({ prizes, currentPrizeIndex }: LeaderboardProps) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: displayIdx * 0.1 }}
               className={cn(
-                "relative p-4 rounded-xl border transition-all duration-300",
+                "relative p-5 rounded-xl border transition-all duration-300",
                 isWon
                   ? "bg-primary/20 border-primary shadow-[0_0_20px_rgba(245,158,11,0.3)]"
                   : isCurrentTarget
@@ -47,30 +47,30 @@ export function Leaderboard({ prizes, currentPrizeIndex }: LeaderboardProps) {
                   : "bg-background/50 border-border/50"
               )}
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-5">
                 {/* Rank Icon */}
                 <div
                   className={cn(
-                    "w-10 h-10 rounded-full flex items-center justify-center",
+                    "w-12 h-12 rounded-full flex items-center justify-center",
                     isWon
                       ? "bg-primary text-black"
                       : "bg-muted text-muted-foreground"
                   )}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-6 h-6" />
                 </div>
 
                 {/* Prize Info */}
                 <div className="flex-1">
                   <h3
                     className={cn(
-                      "font-bold text-lg",
+                      "font-bold text-xl",
                       isWon ? "text-primary" : "text-foreground"
                     )}
                   >
                     {prize.name || "Chưa đặt tên"}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-base text-muted-foreground">
                     {isWon
                       ? "Đã trao giải"
                       : isCurrentTarget
@@ -79,13 +79,12 @@ export function Leaderboard({ prizes, currentPrizeIndex }: LeaderboardProps) {
                   </p>
                 </div>
 
-                {/* Result Badge (only show if won) */}
                 <AnimatePresence>
                   {isWon && prize.winningResult !== undefined && (
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="bg-primary text-black font-black text-xl px-4 py-2 rounded-lg shadow-lg"
+                      className="bg-primary text-black font-black text-2xl px-5 py-3 rounded-lg shadow-lg"
                     >
                       #{prize.winningResult}
                     </motion.div>

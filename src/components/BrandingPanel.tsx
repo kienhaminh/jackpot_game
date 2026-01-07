@@ -6,17 +6,21 @@ import { cn } from "../lib/utils";
 interface BrandingPanelProps {
   logoUrl: string | null;
   primaryColor: string;
+  showLogoBorder: boolean;
   onUploadLogo: (file: File) => void;
   onRemoveLogo: () => void;
   onSetThemeColor: (color: string) => void;
+  onToggleLogoBorder: () => void;
 }
 
 export function BrandingPanel({
   logoUrl,
   primaryColor,
+  showLogoBorder,
   onUploadLogo,
   onRemoveLogo,
   onSetThemeColor,
+  onToggleLogoBorder,
 }: BrandingPanelProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -103,6 +107,29 @@ export function BrandingPanel({
             onChange={handleFileChange}
             className="hidden"
           />
+
+          {/* Logo Border Toggle */}
+          {logoUrl && (
+            <div className="mt-4 flex items-center justify-between">
+              <label className="text-sm text-muted-foreground">
+                Hiển thị viền mềm
+              </label>
+              <button
+                onClick={onToggleLogoBorder}
+                className={cn(
+                  "relative w-12 h-6 rounded-full transition-colors",
+                  showLogoBorder ? "bg-primary" : "bg-muted"
+                )}
+              >
+                <div
+                  className={cn(
+                    "absolute top-1 w-4 h-4 rounded-full bg-white transition-all",
+                    showLogoBorder ? "left-7" : "left-1"
+                  )}
+                />
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Theme Color Section */}
