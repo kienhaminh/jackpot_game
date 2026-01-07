@@ -35,7 +35,7 @@ function SlotDigit({
   }, [isSpinning, isStopped, value]);
 
   return (
-    <div className="relative w-32 h-44 md:w-40 md:h-56 bg-gradient-to-b from-gray-200 via-gray-100 to-gray-300 rounded-2xl shadow-xl flex items-center justify-center overflow-hidden">
+    <div className="relative w-36 h-52 md:w-48 md:h-64 bg-gradient-to-b from-gray-200 via-gray-100 to-gray-300 rounded-2xl shadow-xl flex items-center justify-center overflow-hidden">
       {/* Inner shadow effect */}
       <div className="absolute inset-0 rounded-2xl shadow-[inset_0_4px_15px_rgba(0,0,0,0.25)]" />
 
@@ -43,11 +43,11 @@ function SlotDigit({
       <AnimatePresence mode="popLayout">
         <motion.span
           key={displayValue}
-          initial={{ y: -100, opacity: 0 }}
+          initial={{ y: -120, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
+          exit={{ y: 120, opacity: 0 }}
           transition={{ duration: 0.08 }}
-          className="text-7xl md:text-9xl font-black text-gray-700 font-mono relative z-10"
+          className="text-8xl md:text-[10rem] font-black text-gray-700 font-mono relative z-10"
         >
           {displayValue}
         </motion.span>
