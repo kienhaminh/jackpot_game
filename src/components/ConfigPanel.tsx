@@ -6,6 +6,8 @@ import { cn } from "../lib/utils";
 interface ConfigPanelProps {
   rangeMax: number;
   setRangeMax: (n: number) => void;
+  spinDurationMs: number;
+  setSpinDurationMs: (ms: number) => void;
   prizes: Prize[];
   addPrize: () => void;
   removePrize: (id: string) => void;
@@ -17,6 +19,8 @@ interface ConfigPanelProps {
 export function ConfigPanel({
   rangeMax,
   setRangeMax,
+  spinDurationMs,
+  setSpinDurationMs,
   prizes,
   addPrize,
   removePrize,
@@ -51,21 +55,44 @@ export function ConfigPanel({
         <Dice5 className="w-6 h-6" /> Game Configuration
       </h2>
 
-      {/* Global Range */}
-      <div className="mb-8 p-4 bg-background/50 rounded-lg border border-border">
-        <label className="block text-sm font-medium text-muted-foreground mb-2">
-          Jackpot Range (1 - N)
-        </label>
-        <div className="flex items-center gap-4">
-          <span className="text-2xl font-bold font-mono text-primary">1</span>
-          <span className="text-muted-foreground">-</span>
-          <input
-            type="number"
-            value={rangeMax}
-            onChange={(e) => setRangeMax(Number(e.target.value))}
-            className="bg-background border border-border rounded px-3 py-2 text-foreground focus:ring-2 focus:ring-primary outline-none w-32 font-mono text-lg"
-            disabled={isSpinning}
-          />
+      {/* Global Range & Spin Duration */}
+      <div className="mb-8 grid gap-4 md:grid-cols-2">
+        <div className="p-4 bg-background/50 rounded-lg border border-border">
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
+            Jackpot Range (1 - N)
+          </label>
+          <div className="flex items-center gap-4">
+            <span className="text-2xl font-bold font-mono text-primary">1</span>
+            <span className="text-muted-foreground">-</span>
+            <input
+              type="number"
+              min={1}
+              value={rangeMax}
+              onChange={(e) => setRangeMax(Number(e.target.value))}
+              className="bg-background border border-border rounded px-3 py-2 text-foreground focus:ring-2 focus:ring-primary outline-none w-32 font-mono text-lg"
+              disabled={isSpinning}
+            />
+          </div>
+        </div>
+        <div className="p-4 bg-background/50 rounded-lg border border-border">
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
+            Thời gian quay (giây)
+          </label>
+          <div className="flex items-center gap-3">
+            <input
+              type="number"
+              min={1}
+              max={20}
+              step={0.5}
+              value={spinDurationMs / 1000}
+              onChange={(e) =>
+                setSpinDurationMs(Math.round(Number(e.target.value) * 1000))
+              }
+              className="bg-background border border-border rounded px-3 py-2 text-foreground focus:ring-2 focus:ring-primary outline-none w-32 font-mono text-lg"
+              disabled={isSpinning}
+            />
+            <span className="text-xs text-muted-foreground">1 - 20 giây</span>
+          </div>
         </div>
       </div>
 

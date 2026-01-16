@@ -8,6 +8,8 @@ interface SettingsModalProps {
   onClose: () => void;
   rangeMax: number;
   setRangeMax: (value: number) => void;
+  spinDurationMs: number;
+  setSpinDurationMs: (value: number) => void;
   prizes: Prize[];
   addPrize: () => void;
   removePrize: (id: string) => void;
@@ -29,6 +31,8 @@ export function SettingsModal({
   onClose,
   rangeMax,
   setRangeMax,
+  spinDurationMs,
+  setSpinDurationMs,
   prizes,
   addPrize,
   removePrize,
@@ -84,6 +88,8 @@ export function SettingsModal({
           <ConfigPanel
             rangeMax={rangeMax}
             setRangeMax={setRangeMax}
+            spinDurationMs={spinDurationMs}
+            setSpinDurationMs={setSpinDurationMs}
             prizes={prizes}
             addPrize={addPrize}
             removePrize={removePrize}

@@ -10,6 +10,8 @@ function App() {
   const {
     rangeMax,
     setRangeMax,
+    spinDurationMs,
+    setSpinDurationMs,
     prizes,
     addPrize,
     removePrize,
@@ -155,6 +157,8 @@ function App() {
         onClose={() => setIsSettingsOpen(false)}
         rangeMax={rangeMax}
         setRangeMax={setRangeMax}
+        spinDurationMs={spinDurationMs}
+        setSpinDurationMs={setSpinDurationMs}
         prizes={prizes}
         addPrize={addPrize}
         removePrize={removePrize}

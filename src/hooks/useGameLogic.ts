@@ -4,6 +4,7 @@ import confetti from "canvas-confetti";
 
 export function useGameLogic() {
   const [rangeMax, setRangeMax] = useState<number>(999);
+  const [spinDurationMs, setSpinDurationMs] = useState<number>(5000);
   const [prizes, setPrizes] = useState<Prize[]>([
     { id: "1", name: "Giải Khuyến Khích", type: "random", isWon: false },
     { id: "2", name: "Giải Ba", type: "random", isWon: false },
@@ -167,9 +168,13 @@ export function useGameLogic() {
 
     const finalDigits = numberToDigits(result);
 
-    // Stop digits one by one with delays
-    // First digit stops after 2s, second after 3.5s, third after 5s
-    const stopTimes = [2000, 3500, 5000];
+    // Stop digits one by one with delays based on total spin duration
+    const clampedDuration = Math.min(20000, Math.max(1000, spinDurationMs));
+    const stopTimes = [
+      Math.round(clampedDuration * 0.4),
+      Math.round(clampedDuration * 0.7),
+      clampedDuration,
+    ];
 
     stopTimes.forEach((time, index) => {
       spinTimeoutRef.current = window.setTimeout(() => {
@@ -208,7 +213,7 @@ export function useGameLogic() {
         }
       }, time);
     });
-  }, [isSpinning, rangeMax, prizes, currentPrizeIndex]);
+  }, [isSpinning, rangeMax, prizes, currentPrizeIndex, spinDurationMs]);
 
   const currentPrize = prizes[currentPrizeIndex] || null;
   const isGameComplete = currentPrizeIndex >= prizes.length;
@@ -216,6 +221,8 @@ export function useGameLogic() {
   return {
     rangeMax,
     setRangeMax,
+    spinDurationMs,
+    setSpinDurationMs,
     prizes,
     addPrize,
     removePrize,
